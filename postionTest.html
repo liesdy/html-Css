@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <div class='box' id='box'>
+    <div class="contain-box" id='contain-box'>222</div>
+  </div>
+</body>
+</html>
+<style>
+  .box {
+    height: 500px;
+    overflow: scroll;
+    background-color: #cccccc;
+    scroll-margin-top: 200px;
+  }
+  .contain-box {
+    height: 2000px;
+    background-color: #666;
+  }
+</style>
+<script>
+  document.getElementById('box').scrollTop = 200
+</script>

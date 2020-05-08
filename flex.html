@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>flex</title>
+</head>
+<body>
+  <!-- 
+    容器属性
+    display: flex
+    
+    主轴方向        flex-direction:  row      row-reverse   column    column-reverse
+    换行方式        flex-wrap:       nowrap   wrap          wrap-reverse
+    
+    上述合并        flex-flow:       row nowrap   ...
+
+    主轴对齐方式    justify-content:  flex-start  flex-end   center   space-between  space-around
+    交叉轴对齐方式  align-items：     stretch   flex-start   flex-end   center   baseline
+    多主轴对齐方式  align-content:    stretch   flex-start   flex-end   center   space-between   space-around
+   -->
+
+  <!-- 
+    项目属性
+
+    项目排序        order： integer
+
+    项目放大比例    flex-grow： number    默认为0（不放大）
+    项目缩小比例    flex-shrink： number    默认为1（空间不足时自动缩小）  值为 0 的时候则不缩小   负值无效   实际测试发现只要不为0都可能会缩放，比例根据情况会不同
+    项目主轴空间    flex-basis:  auto      ***px     默认为auto时就是项目本来的大小    也可以手动给定固定值(和 width 与 height 属性形式与效果都一样)
+    上三项缩写      flex:    0 1 auto    优先使用这个属性而不是分别写上面三个属性
+    项目独立对齐    align-self:   auto    给某个项目单独设置对齐属性，可以用来覆盖align-items  除了默认的auto以外其他属性和 align-items一样
+   -->
+  <div class='box1'>
+    <div class="item item1">111111111111111111111</div>
+    <div class="item item2">222222222222222222222</div>
+    <div class="item item3">333333333333333333333</div>
+    <div class="item item4">444444444444444444444</div>
+  </div>
+
+<style>
+  .box1 {
+    display: flex;
+    background-color: #eee;
+    justify-content: space-around;
+    /*scroll-margin-top: 200px;*/
+  }
+  .box1 .item1 {
+    /*197.05*/
+    background: #999;
+    flex-grow: 0
+  }
+  .box1 .item2 {
+    /* 302.69 - 197.05 = 105.64 */
+    background: red;
+    flex-grow: 1
+  }
+  .box1 .item3 {
+    /* 408.31 - 197.05 = 211.26 */
+    background: green;
+    flex-grow: 2
+  }
+  .box1 .item4 {
+    /* 513.95 - 197.05 = 316.9 */
+    background: blue;
+    flex-grow: 3
+  }
+  /* 将flex-grow设为小数也试过了，基本得出结论就是项目本身的大小是不参与比例计算的，这里的比例决定的是比项目本身多出来的宽度比例 */
+</style>
+
+  <div class='box2'>
+    <div class="item item1">111111111111111111111</div>
+    <div class="item item2">222222222222222222222</div>
+    <div class="item item3">333333333333333333333</div>
+  </div>
+
+<style>
+  .box2 {
+    display: flex;
+    background-color: #eee;
+    justify-content: space-around;
+    margin-top: 50px;
+  }
+  .box2 .item1 {
+    /* 原宽度为800px时 */
+    /* 424.95px */
+
+    /* 宽度为600px时 */
+    /* 474px */
+    /* 600-474=126 */
+    width: 600px;
+    background: #999;
+    flex-shrink: 1
+  }
+  .box2 .item2 {
+    /* 原宽度为800px时 */
+    /* 197.05px */
+
+    /* 宽度为600px时 */
+    /* 348px */
+    /* 600-348=252 */
+    width: 600px;
+    background: red;
+    flex-shrink: 2
+  }
+  .box2 .item3 {
+    /* 原宽度为800px时 */
+    /* 800px */
+
+    /* 宽度为600px时 */
+    /* 600px */
+    width: 600px;
+    background: green;
+    flex-shrink: 0
+  }
+  /* 每个项目原宽度为800px这种情况下比例数值与实际页面表现没有直接关系，因为 item2 已经缩到最小，而 item3 不允许缩小，所以剩下的空间都给了 item1 */
+  /* 每个项目原宽度为600px这种情况下比例数值中 item3 不允许缩小，item1 和 item2 分别缩小了 126px 和 252px, 符合 1:2 的比例 */
+  /* 推测 比例值为0时并不只是单纯的不缩放那么简单，这个比例仍然参与整个的比例计算 */
+</style>
+
+  <div class='box3'>
+    <div class="item item1">
+      <div class='content'>111111111111111111111</div>
+    </div>
+    <div class="item item2">
+      <div class='content'>222222222222222222222</div>
+    </div>
+    <div class="item item3">
+      <div class='content'>333333333333333333333</div>
+    </div>
+  </div>
+
+<style>
+  .box3 {
+    display: flex;
+    background-color: #eee;
+    justify-content: space-around;
+    margin-top: 50px;
+  }
+  .box3 .item1 {
+    /* 537px */
+    /* 600-537=63 */
+    width: 600px;
+    background: #999;
+    flex-shrink: 1
+  }
+  .box3 .item2 {
+    /* 474px */
+    /* 600-474=126 */
+    width: 600px;
+    background: red;
+    flex-shrink: 2
+  }
+  .box3 .item3 {
+    /* 411px */
+    /* 600-411=189 */
+    width: 600px;
+    background: green;
+    flex-shrink: 3
+  }
+  .content {
+    width: 200px;
+  }
+  /* 这种情况下可以测出，缩小的比例 1 : 2 : 3 其实是从项目原宽度的基础上减小的值之间的比例 也就是 63 : 126 : 189 */
+</style>
+
+  <!-- 实际测试 -->
+  <div class='box4'>
+    <div class="item item1">
+      <div class='content'>111111111111111111111</div>
+      <div class='content'>444444444444444444444</div>
+    </div>
+    <div class="item item2">
+      <div class='content'>222222222222222222222</div>
+    </div>
+    <div class="item item3">
+      333333333333333333333
+    </div>
+  </div>
+</body>
+</html>
+
+<style>
+  .box4 {
+    display: flex;
+    background-color: #eee;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 50px;
+  }
+  .box4 .item {
+    display: flex;
+    justify-content: space-around;
+    align-items: center
+  }
+  .box4 .item1 {
+    /* 537px */
+    /* 600-537=63 */
+    height: 500px;
+    width: 600px;
+    background: #999;
+    flex-shrink: 1
+  }
+  .box4 .item2 {
+    /* 474px */
+    /* 600-474=126 */
+    height: 200px;
+    width: 600px;
+    background: red;
+    flex-shrink: 2
+  }
+  .box4 .item3 {
+    /* 411px */
+    /* 600-411=189 */
+    height: 300px;
+    width: 600px;
+    background: green;
+    flex-shrink: 3
+  }
+  .content {
+    width: 200px;
+  }
+  .box4 .item .content{
+    background-color: #ffffff;
+    height: 50px;
+  }
+</style>
+<!-- <script>
+  document.getElementById('box').scrollTop = 200
+</script> -->
